@@ -1,0 +1,137 @@
+{
+    "database": {
+        "@name": "company",
+        "table": [
+            {
+                "@name": "employee",
+                "column": [
+                    {
+                        "@name": "number",
+                        "@value": "primary_key"
+                    },
+                    {
+                        "@name": "first_name"
+                    },
+                    {
+                        "@name": "middle_name"
+                    },
+                    {
+                        "@name": "last_name"
+                    },
+                    {
+                        "@name": "salary"
+                    },
+                    {
+                        "@name": "address"
+                    },
+                    {
+                        "@name": "gender"
+                    },
+                    {
+                        "@name": "date_of_birth"
+                    },
+                    {
+                        "@name": "department_number",
+                        "@value": "foreign_key"
+                    },
+                    {
+                        "@name": "supervisor",
+                        "@value": "foreign_key"
+                    }
+                ]
+            },
+            {
+                "@name": "project",
+                "column": [
+                    {
+                        "@name": "number",
+                        "@value": "primary_key"
+                    },
+                    {
+                        "@name": "name"
+                    },
+                    {
+                        "@name": "location"
+                    },
+                    {
+                        "@name": "department_number",
+                        "@value": "foreign_key"
+                    }
+                ]
+            },
+            {
+                "@name": "department",
+                "column": [
+                    {
+                        "@name": "number",
+                        "@value": "primary_key"
+                    },
+                    {
+                        "@name": "name"
+                    },
+                    {
+                        "@name": "employee_number",
+                        "@value": "foreign_key"
+                    },
+                    {
+                        "@name": "start_date"
+                    }
+                ]
+            },
+            {
+                "@name": "dependent",
+                "column": [
+                    {
+                        "@name": "dependent_number",
+                        "@value": "primary_key"
+                    },
+                    {
+                        "@name": "first_name"
+                    },
+                    {
+                        "@name": "gender"
+                    },
+                    {
+                        "@name": "date_of_birth"
+                    },
+                    {
+                        "@name": "relationship"
+                    },
+                    {
+                        "@name": "employee_number",
+                        "@value": "foreign_key"
+                    }
+                ]
+            },
+            {
+                "@name": "work",
+                "column": [
+                    {
+                        "@name": "employee_number",
+                        "@value": "primary_key"
+                    },
+                    {
+                        "@name": "project_number",
+                        "@value": "primary_key"
+                    },
+                    {
+                        "@name": "hours_per_week"
+                    }
+                ]
+            },
+            {
+                "@name": "location",
+                "column": [
+                    {
+                        "@name": "location",
+                        "@value": "primary_key"
+                    },
+                    {
+                        "@name": "department_number",
+                        "@value": "primary_key"
+                    }
+                ]
+            }
+        ]
+    }
+}
