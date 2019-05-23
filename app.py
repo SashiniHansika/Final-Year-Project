@@ -1,10 +1,7 @@
-import csv
 import json
 import xml.etree.ElementTree as ET
 import xmltodict
-from xml.sax import parseString
 
-from dicttoxml import dicttoxml
 
 table = []
 
