@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<er name="company">
+    <entity name="employee">
+    </entity>
+    <entity name="project">
+    </entity>
+</er>
