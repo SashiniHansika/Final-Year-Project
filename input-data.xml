@@ -24,7 +24,7 @@
     </entity>
 
     <entity name="dependent">
-        <attribute name="dependent_number" value="primary_key"/>
+        <attribute name="number" value="primary_key"/>
         <attribute name="first_name" />
         <attribute name="gender"/>
         <attribute name="date_of_birth"/>

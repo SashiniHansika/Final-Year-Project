@@ -24,7 +24,8 @@ def entities_mapping():
                 if not type == 'multi-valued' and not type == 'derived' and not type == 'composite_parent':
                     # print(attribute.get('name'))
                     if value == 'primary_key':
-                        column.append({'@name': attribute.get('name'), '@value': 'primary_key'})
+                        new_primary_key = entity.get('name')+'_'+attribute.get('name')
+                        column.append({'@name': new_primary_key, '@value1': 'primary_key'})
                         # print(column)
                     else:
                         column.append({'@name': attribute.get('name')})
@@ -61,7 +62,7 @@ def binary_one_to_one_relationship_mapping():
                         if member2.get('name') == temp_table_name:
                             temp_table_column_list = temp_table.get('column')
                             # print(new_primary_key_member1)
-                            temp_table_column_list.append({'@name': new_primary_key_member1,'@value':'foreign_key'})
+                            temp_table_column_list.append({'@name': new_primary_key_member1,'@value2':'foreign_key','@ref' : member1.get('name')})
                             # print(temp_table_column_list)
                             for attribute in relationship.findall('attribute'):
                                 temp_table_column_list.append({'@name': attribute.get('name')})
@@ -91,7 +92,7 @@ def binary_one_to_many_relationship_mapping():
                                 if member2.get('name') == temp_table_name:
                                     temp_table_column_list = temp_table.get('column')
                                     # print(new_primary_key_member1)
-                                    temp_table_column_list.append({'@name': foreign_key, '@value': 'foreign_key'})
+                                    temp_table_column_list.append({'@name': foreign_key, '@value2': 'foreign_key' , '@ref' : member1.get('name')})
                                     print(temp_table_column_list)
                                     for attribute in relationship.findall('attribute'):
                                         temp_table_column_list.append({'@name': attribute.get('name')})
@@ -106,7 +107,7 @@ def binary_one_to_many_relationship_mapping():
                             if member1.get('name') == temp_table_name:
                                 temp_table_column_list = temp_table.get('column')
                                 # print(new_primary_key_member1)
-                                temp_table_column_list.append({'@name':foreign_key,'@value':'foreign_key' })
+                                temp_table_column_list.append({'@name':foreign_key,'@value2':'foreign_key','@ref' : member2.get('name')  })
                                 # print(temp_table_column_list)
                                 for attribute in relationship.findall('attribute'):
                                     temp_table_column_list.append({'@name': attribute.get('name')})
@@ -127,13 +128,13 @@ def binary_many_to_many_relationship_mapping():
                     primary_key_member1 = member1.get('primary_key')
                     new_primary_key_member1 = member1.get('name') + '_' + primary_key_member1
                     # print(new_primary_key_member1)
-                    column.append({'@name': new_primary_key_member1, '@value': 'primary_key'})
+                    column.append({'@name': new_primary_key_member1, '@value1': 'primary_key' ,'@value2': 'foreign_key','@ref':member1.get('name') })
                     # print(column)
                 for member2 in relationship.findall('member2'):
                     primary_key_member2 = member2.get('primary_key')
                     new_primary_key_member2 = member2.get('name') + '_' + primary_key_member2
                     # print(new_primary_key_member2)
-                    column.append({'@name': new_primary_key_member2, '@value': 'primary_key'})
+                    column.append({'@name': new_primary_key_member2, '@value1': 'primary_key' ,'@value2': 'foreign_key','@ref':member2.get('name')})
                     # print(column)
 
                 for attribute in relationship.findall('attribute'):
@@ -165,8 +166,8 @@ def multi_valued_attribute_mapping():
                     multi_valued_attribute = attribute.get('name')
                     # print(multi_valued_attribute)
                     table.append({'@name': multi_valued_attribute,
-                                  'column': [{'@name': multi_valued_attribute, '@value': 'primary_key'},
-                                             {'@name': new_primary_key, '@value': 'primary_key'}]})
+                                  'column': [{'@name': multi_valued_attribute, '@value1': 'primary_key'},
+                                             {'@name': new_primary_key, '@value1': 'primary_key','@value2': 'foreign_key','@ref':entity.get('name') }]})
     # print(table)
 
 
@@ -182,7 +183,7 @@ def unary_one_to_one_relationship_mapping():
                             temp_table_column_list = temp_table.get('column')
 
                             for member2 in relationship.findall('member2'):
-                                temp_table_column_list.append({'@name': member2.get('name'), '@value': 'foreign_key'})
+                                temp_table_column_list.append({'@name': member2.get('name'), '@value2': 'foreign_key','@ref': member2.get('name')})
 
     # print(table)
 
@@ -198,7 +199,7 @@ def unary_one_to_many_relationship_mapping():
                         if member1.get('name') == temp_table_name:
                             temp_table_column_list = temp_table.get('column')
                             for member2 in relationship.findall('member2'):
-                                temp_table_column_list.append({'@name': member2.get('name'), '@value': 'foreign_key'})
+                                temp_table_column_list.append({'@name': member2.get('name'), '@value2': 'foreign_key', '@ref' : member1.get('name')})
 
     # print(table)
 
@@ -213,13 +214,13 @@ def unary_many_to_many_relationship_mapping():
                     primary_key_member1 = member1.get('primary_key')
                     new_primary_key_member1 = member1.get('name') + '_' + primary_key_member1
                     # print(new_primary_key_member1)
-                    column.append({'@name': new_primary_key_member1, '@value': 'primary_key'})
+                    column.append({'@name': new_primary_key_member1, '@value1': 'primary_key', '@value2': 'foreign_key' , '@ref':member1.get('name')})
                     # print(column)
                 for member2 in relationship.findall('member2'):
                     primary_key_member2 = member2.get('primary_key')
                     new_primary_key_member2 = member2.get('name') + '_' + primary_key_member2
                     # print(new_primary_key_member2)
-                    column.append({'@name': new_primary_key_member2, '@value': 'primary_key'})
+                    column.append({'@name': new_primary_key_member2,'@value1': 'primary_key', '@value2': 'foreign_key' , '@ref':member2.get('name')})
                     # print(column)
 
                 table.append({'@name': relationship.get('name'), 'column': column})
@@ -235,19 +236,19 @@ def ternary_relationship_mapping():
                 primary_key_member1 = member1.get('primary_key')
                 new_primary_key_member1 = member1.get('name') + '_' + primary_key_member1
                 # print(new_primary_key_member1)
-                column.append({'@name': new_primary_key_member1, '@value': 'primary_key'})
+                column.append({'@name': new_primary_key_member1, '@value1': 'primary_key', '@value2': 'foreign_key' ,'@ref':member1.get('name')})
                 # print(column)
             for member2 in relationship.findall('member2'):
                 primary_key_member2 = member2.get('primary_key')
                 new_primary_key_member2 = member2.get('name') + '_' + primary_key_member2
                 # print(new_primary_key_member2)
-                column.append({'@name': new_primary_key_member2, '@value': 'primary_key'})
+                column.append({'@name': new_primary_key_member2, '@value1': 'primary_key', '@value2': 'foreign_key' ,'@ref':member2.get('name')})
                 # print(column)
             for member3 in relationship.findall('member3'):
                 primary_key_member3 = member3.get('primary_key')
                 new_primary_key_member3 = member3.get('name') + '_' + primary_key_member3
                 # print(new_primary_key_member3)
-                column.append({'@name': new_primary_key_member3, '@value': 'primary_key'})
+                column.append({'@name': new_primary_key_member3, '@value1': 'primary_key', '@value2': 'foreign_key' ,'@ref':member3.get('name')})
                 # print(column)
 
             table.append({'@name': relationship.get('name'), 'column': column})

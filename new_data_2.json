@@ -6,8 +6,8 @@
                 "@name": "employee",
                 "column": [
                     {
-                        "@name": "number",
-                        "@value": "primary_key"
+                        "@name": "employee_number",
+                        "@value1": "primary_key"
                     },
                     {
                         "@name": "first_name"
@@ -32,11 +32,13 @@
                     },
                     {
                         "@name": "department_number",
-                        "@value": "foreign_key"
+                        "@ref": "department",
+                        "@value2": "foreign_key"
                     },
                     {
                         "@name": "supervisor",
-                        "@value": "foreign_key"
+                        "@ref": "employee",
+                        "@value2": "foreign_key"
                     }
                 ]
             },
@@ -44,8 +46,8 @@
                 "@name": "project",
                 "column": [
                     {
-                        "@name": "number",
-                        "@value": "primary_key"
+                        "@name": "project_number",
+                        "@value1": "primary_key"
                     },
                     {
                         "@name": "name"
@@ -55,7 +57,8 @@
                     },
                     {
                         "@name": "department_number",
-                        "@value": "foreign_key"
+                        "@ref": "department",
+                        "@value2": "foreign_key"
                     }
                 ]
             },
@@ -63,15 +66,16 @@
                 "@name": "department",
                 "column": [
                     {
-                        "@name": "number",
-                        "@value": "primary_key"
+                        "@name": "department_number",
+                        "@value1": "primary_key"
                     },
                     {
                         "@name": "name"
                     },
                     {
                         "@name": "employee_number",
-                        "@value": "foreign_key"
+                        "@ref": "employee",
+                        "@value2": "foreign_key"
                     },
                     {
                         "@name": "start_date"
@@ -83,7 +87,7 @@
                 "column": [
                     {
                         "@name": "dependent_number",
-                        "@value": "primary_key"
+                        "@value1": "primary_key"
                     },
                     {
                         "@name": "first_name"
@@ -99,7 +103,8 @@
                     },
                     {
                         "@name": "employee_number",
-                        "@value": "foreign_key"
+                        "@ref": "employee",
+                        "@value2": "foreign_key"
                     }
                 ]
             },
@@ -108,11 +113,15 @@
                 "column": [
                     {
                         "@name": "employee_number",
-                        "@value": "primary_key"
+                        "@ref": "employee",
+                        "@value1": "primary_key",
+                        "@value2": "foreign_key"
                     },
                     {
                         "@name": "project_number",
-                        "@value": "primary_key"
+                        "@ref": "project",
+                        "@value1": "primary_key",
+                        "@value2": "foreign_key"
                     },
                     {
                         "@name": "hours_per_week"
@@ -124,11 +133,13 @@
                 "column": [
                     {
                         "@name": "location",
-                        "@value": "primary_key"
+                        "@value1": "primary_key"
                     },
                     {
                         "@name": "department_number",
-                        "@value": "primary_key"
+                        "@ref": "department",
+                        "@value1": "primary_key",
+                        "@value2": "foreign_key"
                     }
                 ]
             }
