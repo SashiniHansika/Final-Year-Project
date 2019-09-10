@@ -1,0 +1,10 @@
+A book has a unique ISBN number, a title and one or more authors. The library service may own
+several copies of a given book, each of which is located in one of the service’s libraries. A given
+library contains many books, and in order to distinguish different copies of the same book a
+library assigns a different copy-number to each of its copies of a given book; the price that was
+paid for each copy is also recorded. Every library has a unique name and is either a main library
+or a branch library. A main library may have zero or more branch libraries and every branch
+library is a branch of exactly one main library. A borrower has a name and a unique ID code. A
+borrower can have many books on loan, but each copy of a book can only be on loan to one
+borrower. A borrower could borrow the same book on several occasions, but it is assumed that
+each such loan will take place on a different date.
