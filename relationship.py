@@ -2,16 +2,20 @@ import xml.etree.ElementTree as ET
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-lemmatizer = WordNetLemmatizer()
+
+lemmatizer = nltk.WordNetLemmatizer()
 
 filtered_sentence_list = []
 relationship_identified_sentence_list = []
 sentence_list_has_entities = []
+relationship_dic_list = []
 
+# open input text scenario
 text_file = open("input_text.txt", "r")
 stopWords = set(stopwords.words('english'))
 
 if text_file.mode == 'r':
+    # Read the scenario and covert that text file into lowercase
     input_text_load = text_file.read()
     input_text = input_text_load.lower()
     # print(input_text)
@@ -19,6 +23,7 @@ if text_file.mode == 'r':
 new_word_list = []
 
 
+# Read input XML file
 def xml_input_handling():
     tree = ET.parse("input_xml.xml")
     root = tree.getroot()
@@ -30,7 +35,8 @@ def find_entities(word):
     for entity_ref in root.findall('entity'):
         entity = entity_ref.get('name')
         entity_singular = lemmatizer.lemmatize(entity)
-        if word == entity or word == entity_singular:
+        word_singular = lemmatizer.lemmatize(word)
+        if word == entity or word == entity_singular or word_singular == entity_singular:
             return word
 
 
@@ -89,18 +95,27 @@ def find_relationship(entity_list, sentence):
                                     # print(sentence)
                                     relationship_identified_sentence_list.append(sentence)
 
-
                         if relationship_list:
                             if len(relationship_list) > 1:
                                 relationship = relationship_list[0] + '_' + relationship_list[1]
                             else:
                                 relationship = relationship_list[0]
-                            print(entity_and_index_list[0].get('member1'))
-                            print(relationship)
-                            print(entity_and_index_list[1].get('member2'))
-                            print('######################################')
+                            relationship_dic = {'member1': entity_and_index_list[0].get('member1'),
+                                                'relationship': relationship,
+                                                'member2': entity_and_index_list[1].get('member2')}
+                            relationship_dic_list.append(relationship_dic)
+
+                            # print(entity_and_index_list[0].get('member1'))
+                            # print(relationship)
+                            # print(entity_and_index_list[1].get('member2'))
+                            # print('######################################')
+        print(relationship_dic_list)
+        return relationship_dic_list
 
 
+def get_relationship_list():
+    # print(relationship_dic_list)
+    return relationship_dic_list
 
 
 def find_relationship_without_verb():
@@ -131,9 +146,8 @@ def sentences_into_word(sentence):
     return word
 
 
-
-
 # sentences_into_word()
 # text_pos_tagging()
 entity_combined_with_scenario()
+get_relationship_list()
 # find_relationship_without_verb()
