@@ -1,10 +1,19 @@
 from relationship import relationship_dic_list
-from pattern.en import pluralize, singularize,conjugate, lemma, lexeme
+# from pattern.en import pluralize, singularize,conjugate, lemma, lexeme
 import nltk
+import inflect
 
+one_to_one_relationship_list = []
+one_to_many_relationship_list = []
+many_to_many_relationship_list = []
 
-print(relationship_dic_list)
-text_file = open("input_text.txt", "r")
+p = inflect.engine()
+
+lemmatizer = nltk.WordNetLemmatizer()
+stemmer = nltk.PorterStemmer()
+
+# print(relationship_dic_list)
+text_file = open("data\\input1_text.txt", "r")
 
 if text_file.mode == 'r':
     # Read the scenario and covert that text file into lowercase
@@ -68,33 +77,88 @@ def find_one_to_one():
 
         member1 = dic.get('member1')
         member2 = dic.get('member2')
-        print(member1, member2)
 
-        singular_member1 = singularize(member1)
-        singular_member2 = singularize(member2)
+        # print(member1, member2)
+
+        member1_tokenize = nltk.word_tokenize(member1)
+        member2_tokenize = nltk.word_tokenize(member2)
+
+        member_1_tag = nltk.pos_tag(member1_tokenize)
+        member_2_tag = nltk.pos_tag(member2_tokenize)
+
+        # print("member1 tokenize: ", member_1_tag)
+        # print("member2 tokenize: ", member_2_tag)
+
+        # singular_member1 = singularize(member1)
+        # singular_member2 = singularize(member2)
+
+        singular_member1 = lemmatizer.lemmatize(member1)
+
         # print(singular_member1, singular_member2)
 
         sentence_list = get_sentences_match_with_entities(member1, member2)
-        print(sentence_list)
+        # print(sentence_list)
 
         relationship = dic.get('relationship')
-        print(relationship)
+        # print(relationship)
+
         new_relationship_list = relationship.split('_')
 
         # pos_tag_relationship = nltk.pos_tag(new_relationship_list)
         # print(pos_tag_relationship)
 
         if len(new_relationship_list) > 1:
-            correct_relationship =  new_relationship_list[1]
+            correct_relationship = new_relationship_list[1]
 
         else:
             correct_relationship = new_relationship_list[0]
 
-        print(correct_relationship)
-        print(conjugate('purred', '3sg'))
-        # if singular_member1 == member1 and singular_member2 == member2:
-        #     print(dic)
+        # print(correct_relationship)
+        # text = nltk.word_tokenize(correct_relationship)
+        # print(nltk.pos_tag(text))
+        relationship_lem = lemmatizer.lemmatize(correct_relationship, pos="v")
+        # relationship_stem = stemmer.stem(correct_relationship)
+        # print("Relationship stem : " ,relationship_stem)
+        # print("Relationship lem : ", relationship_lem)
 
+        sentence_set = list(set(sentence_list))
+
+        for sentence in sentence_set:
+            text = nltk.word_tokenize(sentence)
+            # print(sentence)
+            pos_tag_list = nltk.pos_tag(text)
+            # print(nltk.pos_tag(pos_tag_list))
+            for word_pair in pos_tag_list:
+                if word_pair[1] == 'VBZ':
+                    # print("word: ", word_pair[0])
+                    word_stem = lemmatizer.lemmatize(word_pair[0], pos="v")
+                    # print("word_stem: ", word_stem)
+                    if word_stem == relationship_lem:
+                        # print("may be one to one: ", relationship_lem)
+
+                        if member_1_tag[0][1] == 'NN' and member_2_tag[0][1] == 'NN':
+                            one_to_one_relationship_list.append(
+                                {'member1': member1, 'member2': member2, 'relationship': relationship})
+                            # print(member1, member2, relationship_lem)
+                            # print("--------------------------------------------")
+
+                if word_pair[1] == 'VBN':
+                    if new_relationship_list[0] == 'is':
+                        if member_1_tag[0][1] == 'NN' and member_2_tag[0][1] == 'NN':
+                            one_to_one_relationship_list.append(
+                                {'member1': member1, 'member2': member2, 'relationship': relationship})
+                            # print(member1, member2, relationship)
+                            # print("--------------------------------------------")
+
+    print(one_to_one_relationship_list)
+
+
+def find_one_to_many():
+    for dic in relationship_dic_list:
+        # print(dic)
+
+        member1 = dic.get('member1')
+        member2 = dic.get('member2')
 
 
 find_one_to_one()
